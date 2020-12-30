@@ -1,5 +1,6 @@
 package br.com.portfolio.biblioteca.api.dto.request;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.validation.constraints.NotBlank;
@@ -13,7 +14,9 @@ import br.com.portfolio.biblioteca.api.validator.UniqueValue;
 import br.com.portfolio.biblioteca.domain.entity.Livro;
 
 
-public class LivroRq {
+public class LivroRq implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	
 	@NotBlank
 	private String titulo;
@@ -22,8 +25,11 @@ public class LivroRq {
 	private BigDecimal preco;
 	@NotBlank
 	@ISBN(type = Type.ISBN_10)
-	@UniqueValue(domainClass = Livro.class, fieldName = "isbn")
+	@UniqueValue(domainClass = Livro.class, fieldName = "isbn", message = "já existe um ISBN com esse valor")
 	private String isbn;
+	
+	@Deprecated
+	private LivroRq() {}
 
 	public LivroRq(@NotBlank String titulo, @NotNull @Positive BigDecimal preco,
 			@NotBlank @ISBN(type = Type.ISBN_10) String isbn) {

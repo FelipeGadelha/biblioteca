@@ -15,7 +15,7 @@ import javax.validation.Payload;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface UniqueValue {
 
-	String message() default "{br.com.portfolio.validator.uniquevalue.message}";
+	String message() default "br.com.portfolio.biblioteca.api.validator.UniqueValue";
 	
 	Class<?> [] groups() default { };
 	

@@ -79,18 +79,21 @@ public class Livro {
 
 	public Emprestimo criaEmprestimo(@NotNull @Valid Usuario usuario, @Positive int tempo) {
 
-		Assert.isTrue(this.aceitaSerEmprestado(usuario), "Você esta tentando gerar um emprestimo de livro que não aceita ser emprestado para o usuario " + usuario.getId());
+		Assert.isTrue(this.aceitaSerEmprestado(usuario), 
+				"Você esta tentando gerar um emprestimo de livro que não aceita ser emprestado para o usuario " 
+						+ usuario.getId());
 		
 		Exemplar exemplarSelecionado = exemplares.stream()
 		.filter(exemplar -> exemplar.getTipo().aceita(usuario))
 		.findFirst().get();
 		
-		return new Emprestimo(usuario, exemplarSelecionado, tempo);
+		Assert.isTrue(exemplarSelecionado.disponivelParaEmprestimo(), "Não deve tentar criar um emprestimo para um exemplar indisponivel");
+		
+		return exemplarSelecionado.criaEmprestimo(usuario, tempo);
 	}
 
 	public boolean estaDisponivelParaEmprestimo() {
-
-		return false;
+		return exemplares.stream().anyMatch(exemplar -> exemplar.disponivelParaEmprestimo());
 	}
 	
 	

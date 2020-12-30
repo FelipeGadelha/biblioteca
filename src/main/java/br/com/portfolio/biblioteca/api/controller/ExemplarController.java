@@ -35,14 +35,16 @@ public class ExemplarController {
 		this.livroRepository = livroRepository;
 	}
 
-	@PostMapping(value = "/livro/{isbn}/instancias")
+	@PostMapping(value = "/livro/{isbn}/exemplares")
 	@Transactional
 	public ResponseEntity<?> save(@PathVariable("isbn") String isbn, @RequestBody @Valid ExemplarRq exemplarRq) {
 		Optional<Livro> livro = livroRepository.findByIsbn(isbn);
-		return livro.map(entity ->{
+		return livro.map(entity -> {
 			Exemplar exemplar = exemplarRq.toModel(livro.get());
 			manager.persist(exemplar);
-			return ResponseEntity.ok(exemplar.getId());
+			return ResponseEntity.ok()
+					//.cacheControl(CacheControl.maxAge(Duration.ofSeconds(30)))
+					.body(exemplar.getId());
 			
 		}).orElse(ResponseEntity.notFound().build());
 	}

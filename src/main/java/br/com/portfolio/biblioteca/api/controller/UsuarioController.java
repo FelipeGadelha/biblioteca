@@ -20,7 +20,7 @@ public class UsuarioController {
 	@Autowired
 	private EntityManager manager;
 	
-	@PostMapping
+	@PostMapping//(consumes={"application/json"})
 	@Transactional
 	public Long save(@RequestBody @Valid UsuarioRq usuarioRq) {
 		Usuario usuario = usuarioRq.toModel();

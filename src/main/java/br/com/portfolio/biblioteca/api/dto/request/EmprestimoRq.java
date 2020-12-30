@@ -25,6 +25,9 @@ public class EmprestimoRq implements PedidoEmprestimoComTempo {
 	@Range(min = 1, max = 60)
 	private Integer tempo;
 	
+	@Deprecated
+	private EmprestimoRq() {}
+	
 	public EmprestimoRq(@NotNull Long idUsuario, @NotNull Long idLivro) {
 		super();
 		this.idUsuario = idUsuario;

@@ -2,8 +2,8 @@ package br.com.portfolio.biblioteca.api.validator;
 
 import javax.persistence.EntityManager;
 
-import org.modelmapper.internal.util.Assert;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -40,17 +40,16 @@ public class verificacaoBasicaEmprestimoValidator implements Validator{
 		Assert.state(livro!=null, "O livro tem que ser diferente de nulo para validar");
 		
 		if (!livro.aceitaSerEmprestado(usuario)) {
-			errors.reject(null, "Este usuário não pode pegar este livro");
+			errors.reject("Usuário",  "Este usuário não pode pegar este livro");
 		}
 		
 		if (!usuario.tempoEmprestimoValido(emprestimoRq)) {
-			errors.reject(null, "Necessário definir tempo de emprestimo");
+			errors.reject("Tempo", "Necessário definir tempo de emprestimo");
 		}
 		
 		if (!livro.estaDisponivelParaEmprestimo()) {
-			errors.reject(null, "este livro não está disponível para emprestimo");			
+			errors.reject("Livro", "este livro não está disponível para emprestimo");
 		}
-		
 //		isbn
 //		8535932879
 //		8571838267

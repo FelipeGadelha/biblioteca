@@ -5,11 +5,11 @@ import java.util.Set;
 
 public class ValidationExceptionDetails extends ExceptionDetails{
 
-	private final Map<String, Set<String>> fieldError;
+	private final Map<String, Set<String>> errors;
 	
 	protected ValidationExceptionDetails(Builder builder) {
 		super(builder);
-		this.fieldError = builder.fieldError;
+		this.errors = builder.errors;
 		
 	}
 
@@ -19,14 +19,14 @@ public class ValidationExceptionDetails extends ExceptionDetails{
 	
 	public static class Builder extends ExceptionDetails.Builder<Builder> {
 		
-		private Map<String, Set<String>> fieldError;
+		private Map<String, Set<String>> errors;
 		
 		protected Builder() {
 			super();
 		}
 		
-		public Builder fieldError(Map<String, Set<String>> map) {
-			this.fieldError = map;
+		public Builder errors(Map<String, Set<String>> map) {
+			this.errors = map;
 			return this;
 		}
 
@@ -41,7 +41,7 @@ public class ValidationExceptionDetails extends ExceptionDetails{
         }
 	}
 	
-	public Map<String, Set<String>> getFieldError() {
-		return fieldError;
+	public Map<String, Set<String>> getErrors() {
+		return errors;
 	}
 }

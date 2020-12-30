@@ -37,6 +37,7 @@ public class EmprestimoController {
 	public Long save(@RequestBody @Valid EmprestimoRq emprestimoRq) {
 		
 		Emprestimo emprestimo = emprestimoRq.toModel(manager);
+		System.out.println("teste de concorrência");
 		manager.persist(emprestimo);
 		return emprestimo.getId();
 		
