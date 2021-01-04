@@ -1,9 +1,13 @@
 package br.com.portfolio.biblioteca.domain.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import org.modelmapper.internal.util.Assert;
@@ -19,7 +23,8 @@ public class Usuario {
 	private Long id;
 	
 	private @NotNull TipoUsuario tipo;
-
+	@OneToMany(mappedBy = "usuario")
+	private List<Emprestimo> emprestimos = new ArrayList<>();
 	@Deprecated
 	public Usuario() {}
 	
@@ -36,12 +41,25 @@ public class Usuario {
 		return tipo;
 	}
 
+	public List<Emprestimo> getEmprestimos() {
+		return emprestimos;
+	}
+	
 	public boolean tipo(TipoUsuario tipoBuscado) {
 		return this.tipo.equals(tipoBuscado);
 	}
 
 	public boolean tempoEmprestimoValido(PedidoEmprestimoComTempo pedido) {
 		return tipo.aceitaTempoEmprestimo(pedido);
+	}
+
+	public boolean aindaPodeSolicitarEmprestimo() {
+		long quantidadeEmprestimoNãoDevolvido = this.emprestimos
+				.stream()
+				.filter(emprestimo -> !emprestimo.foiDevolvido())
+				.count();
+		int limiteDeEmprestimo = 5;
+		return quantidadeEmprestimoNãoDevolvido < limiteDeEmprestimo;
 	}
 
 

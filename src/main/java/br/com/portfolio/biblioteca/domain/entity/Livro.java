@@ -80,20 +80,28 @@ public class Livro {
 	public Emprestimo criaEmprestimo(@NotNull @Valid Usuario usuario, @Positive int tempo) {
 
 		Assert.isTrue(this.aceitaSerEmprestado(usuario), 
-				"Você esta tentando gerar um emprestimo de livro que não aceita ser emprestado para o usuario " 
+				"Você esta tentando gerar um empréstimo de livro que não aceita ser emprestado para o usuário " 
 						+ usuario.getId());
+		Assert.state(this.estaDisponivelParaEmprestimo(), "Você não pode criar empréstimo para um livro que não tem exemplar disponível");
+		Assert.isTrue(usuario.aindaPodeSolicitarEmprestimo(), "O usuário não pode mais solicitar empréstimo");
 		
 		Exemplar exemplarSelecionado = exemplares.stream()
-		.filter(exemplar -> exemplar.getTipo().aceita(usuario))
+		.filter(exemplar -> exemplar.disponivel(usuario))
 		.findFirst().get();
 		
-		Assert.isTrue(exemplarSelecionado.disponivelParaEmprestimo(), "Não deve tentar criar um emprestimo para um exemplar indisponivel");
+		Assert.state(exemplarSelecionado.disponivelParaEmprestimo(), "Não deve tentar criar um emprestimo para um exemplar indisponível");
 		
 		return exemplarSelecionado.criaEmprestimo(usuario, tempo);
 	}
 
 	public boolean estaDisponivelParaEmprestimo() {
 		return exemplares.stream().anyMatch(exemplar -> exemplar.disponivelParaEmprestimo());
+	}
+
+	@Override
+	public String toString() {
+		return "Livro [id=" + id + ", titulo=" + titulo + ", preco=" + preco + ", isbn=" + isbn + ", exemplares="
+				+ exemplares + "]";
 	}
 	
 	

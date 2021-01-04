@@ -73,6 +73,10 @@ public class Exemplar { //exemplary
 		return emprestimo;
 	}
 
+	public Boolean disponivel(@NotNull @Valid Usuario usuario) {
+		return this.getTipo().aceita(usuario) && this.disponivelParaEmprestimo();
+	}
+
 //	public boolean aceita(Usuario usuario) {
 //		return this.tipo.aceita(usuario);
 //	}

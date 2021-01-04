@@ -39,13 +39,13 @@ public class ExemplarController {
 	@Transactional
 	public ResponseEntity<?> save(@PathVariable("isbn") String isbn, @RequestBody @Valid ExemplarRq exemplarRq) {
 		Optional<Livro> livro = livroRepository.findByIsbn(isbn);
+//		Assert.state(Objects.isNull(livro), "Este Livro não existe");
 		return livro.map(entity -> {
-			Exemplar exemplar = exemplarRq.toModel(livro.get());
-			manager.persist(exemplar);
-			return ResponseEntity.ok()
-					//.cacheControl(CacheControl.maxAge(Duration.ofSeconds(30)))
-					.body(exemplar.getId());
-			
+				Exemplar exemplar = exemplarRq.toModel(entity);
+				manager.persist(exemplar);
+				return ResponseEntity.ok()
+						//.cacheControl(CacheControl.maxAge(Duration.ofSeconds(30)))
+						.body(exemplar.getId());				
 		}).orElse(ResponseEntity.notFound().build());
 	}
 	

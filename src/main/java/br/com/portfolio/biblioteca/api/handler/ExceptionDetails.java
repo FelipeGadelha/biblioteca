@@ -2,6 +2,10 @@ package br.com.portfolio.biblioteca.api.handler;
 
 import java.time.OffsetDateTime;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class ExceptionDetails{
 	
 	protected String title;
@@ -78,8 +82,8 @@ public class ExceptionDetails{
 		return developerMessage;
 	}
 
-	public OffsetDateTime getTimestamp() {
-		return timestamp;
+	public String getTimestamp() {
+		return timestamp.toString();
 	}
 
 	@Override

@@ -39,17 +39,10 @@ public class verificacaoBasicaEmprestimoValidator implements Validator{
 		Assert.state(usuario!=null, "O usuário tem que ser diferente de nulo para validar");
 		Assert.state(livro!=null, "O livro tem que ser diferente de nulo para validar");
 		
-		if (!livro.aceitaSerEmprestado(usuario)) {
-			errors.reject("Usuário",  "Este usuário não pode pegar este livro");
-		}
+		ValidaLivroParaEmprestimo.valida(usuario, livro, errors);
+		ValidaUsuarioParaEmprestimo.valida(usuario, emprestimoRq, errors);
 		
-		if (!usuario.tempoEmprestimoValido(emprestimoRq)) {
-			errors.reject("Tempo", "Necessário definir tempo de emprestimo");
-		}
 		
-		if (!livro.estaDisponivelParaEmprestimo()) {
-			errors.reject("Livro", "este livro não está disponível para emprestimo");
-		}
 //		isbn
 //		8535932879
 //		8571838267

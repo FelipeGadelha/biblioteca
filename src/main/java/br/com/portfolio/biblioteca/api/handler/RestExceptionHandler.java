@@ -99,7 +99,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     		map = globalErrors.stream().collect(Collectors.groupingBy(ObjectError::getCode,
     				Collectors.mapping(ObjectError::getDefaultMessage, Collectors.toSet())));			
 		}
-    	
 		return new ResponseEntity<>(ValidationExceptionDetails
 				.builder().timestamp(OffsetDateTime.now())
 				.status(HttpStatus.BAD_REQUEST.value())
