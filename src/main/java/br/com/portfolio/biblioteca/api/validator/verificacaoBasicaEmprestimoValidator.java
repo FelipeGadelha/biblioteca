@@ -39,7 +39,7 @@ public class verificacaoBasicaEmprestimoValidator implements Validator{
 		Assert.state(usuario!=null, "O usuário tem que ser diferente de nulo para validar");
 		Assert.state(livro!=null, "O livro tem que ser diferente de nulo para validar");
 		
-		ValidaLivroParaEmprestimo.valida(usuario, livro, errors);
+		new ValidaLivroParaEmprestimo().valida(usuario, livro, errors);
 		ValidaUsuarioParaEmprestimo.valida(usuario, emprestimoRq, errors);
 		
 		

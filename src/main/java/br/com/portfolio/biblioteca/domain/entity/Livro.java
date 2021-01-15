@@ -18,6 +18,8 @@ import org.hibernate.validator.constraints.ISBN;
 import org.hibernate.validator.constraints.ISBN.Type;
 import org.springframework.util.Assert;
 
+import br.com.portfolio.biblioteca.domain.enums.Tipo;
+
 @Entity
 public class Livro {
 	
@@ -96,6 +98,13 @@ public class Livro {
 
 	public boolean estaDisponivelParaEmprestimo() {
 		return exemplares.stream().anyMatch(exemplar -> exemplar.disponivelParaEmprestimo());
+	}
+	
+	//1
+	public Exemplar novoExemplar(Tipo tipo) {
+		Exemplar novoExemplar = new Exemplar(tipo, this);
+		this.exemplares.add(novoExemplar);
+		return novoExemplar;
 	}
 
 	@Override

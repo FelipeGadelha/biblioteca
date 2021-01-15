@@ -41,7 +41,7 @@ public class ExemplarController {
 		Optional<Livro> livro = livroRepository.findByIsbn(isbn);
 //		Assert.state(Objects.isNull(livro), "Este Livro não existe");
 		return livro.map(entity -> {
-				Exemplar exemplar = exemplarRq.toModel(entity);
+				Exemplar exemplar = entity.novoExemplar(exemplarRq.getTipo());
 				manager.persist(exemplar);
 				return ResponseEntity.ok()
 						//.cacheControl(CacheControl.maxAge(Duration.ofSeconds(30)))

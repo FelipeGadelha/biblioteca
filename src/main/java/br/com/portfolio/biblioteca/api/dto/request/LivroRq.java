@@ -29,7 +29,7 @@ public class LivroRq implements Serializable{
 	private String isbn;
 	
 	@Deprecated
-	private LivroRq() {}
+	public LivroRq() {}
 
 	public LivroRq(@NotBlank String titulo, @NotNull @Positive BigDecimal preco,
 			@NotBlank @ISBN(type = Type.ISBN_10) String isbn) {

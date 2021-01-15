@@ -1,7 +1,6 @@
 package br.com.portfolio.biblioteca.api.dto.request;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
@@ -26,7 +25,7 @@ public class EmprestimoRq implements PedidoEmprestimoComTempo {
 	private Integer tempo;
 	
 	@Deprecated
-	private EmprestimoRq() {}
+	public EmprestimoRq() {}
 	
 	public EmprestimoRq(@NotNull Long idUsuario, @NotNull Long idLivro) {
 		super();
@@ -51,7 +50,8 @@ public class EmprestimoRq implements PedidoEmprestimoComTempo {
 	}
 
 	public boolean temTempoEmprestimo() {
-		return Optional.ofNullable(tempo).isPresent();
+//		return Optional.ofNullable(tempo).isPresent();
+		return Objects.nonNull(tempo);
 	}
 
 	public Emprestimo toModel(EntityManager manager) {
@@ -64,7 +64,7 @@ public class EmprestimoRq implements PedidoEmprestimoComTempo {
 		
 		
 		int limiteMaximoDeTempoDeEmprestimo = 60;
-		int tempoDefinido = tempo == null? limiteMaximoDeTempoDeEmprestimo : tempo;
+		int tempoDefinido = tempo == null ? limiteMaximoDeTempoDeEmprestimo : tempo;
 		return livro.criaEmprestimo(usuario, tempoDefinido);
 		
 	}

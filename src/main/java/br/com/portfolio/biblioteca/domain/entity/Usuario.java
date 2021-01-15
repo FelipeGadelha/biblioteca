@@ -25,6 +25,7 @@ public class Usuario {
 	private @NotNull TipoUsuario tipo;
 	@OneToMany(mappedBy = "usuario")
 	private List<Emprestimo> emprestimos = new ArrayList<>();
+	
 	@Deprecated
 	public Usuario() {}
 	
