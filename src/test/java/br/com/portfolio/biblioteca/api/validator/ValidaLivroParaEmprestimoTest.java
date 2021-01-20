@@ -18,12 +18,13 @@ import br.com.portfolio.biblioteca.domain.enums.TipoUsuario;
 class ValidaLivroParaEmprestimoTest {
 	
 	@Test
-	@DisplayName("rejeita o emprestimo caso o livro não possa ser emprestado")
+	@DisplayName("Deveria rejeitar o emprestimo caso o livro não possa ser emprestado")
 	void test1() {
 		ValidaLivroParaEmprestimo validador = new ValidaLivroParaEmprestimo();
 		
 		var livro = new Livro("titulo", BigDecimal.TEN, "897452386534");
 		livro.novoExemplar(Tipo.RESTRITO);
+		
 		var usuario = new Usuario(TipoUsuario.PADRAO);
 		Errors errors = Mockito.spy(new BeanPropertyBindingResult(new Object(), "target"));
 		
@@ -40,7 +41,7 @@ class ValidaLivroParaEmprestimoTest {
 	}
 	
 	@Test
-	@DisplayName("rejeita o emprestimo caso o livro não esteja disponivel para emprestimo")
+	@DisplayName("Deveria rejeitar o emprestimo caso o livro não esteja disponivel para emprestimo")
 	void test2() {
 		var validador = new ValidaLivroParaEmprestimo();
 		
@@ -50,7 +51,7 @@ class ValidaLivroParaEmprestimoTest {
 		
 		ReflectionTestUtils.setField(usuario, "id", 1l);
 		
-		livro.criaEmprestimo(usuario, 60);
+		usuario.criaEmprestimo(livro, 60);
 		
 		Errors errors = Mockito.spy(new BeanPropertyBindingResult(new Object(), "target"));
 		
@@ -58,7 +59,6 @@ class ValidaLivroParaEmprestimoTest {
 		
 		Assertions.assertEquals(1, errors.getErrorCount());
 		Mockito.verify(errors, Mockito.never()).reject("Usuário",  "Este usuário não pode pegar este livro");
-		
 	}
 
 }

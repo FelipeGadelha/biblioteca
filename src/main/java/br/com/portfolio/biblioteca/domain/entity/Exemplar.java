@@ -1,5 +1,6 @@
 package br.com.portfolio.biblioteca.domain.entity;
 
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -45,7 +46,7 @@ public class Exemplar { //exemplary
 	}
 
 	public Long getId() {
-		Assert.state(id!=null, "Entidade ainda não foi persistida do banco de dados");
+		Assert.state(Objects.nonNull(id), "Entidade ainda não foi persistida do banco de dados");
 		return id;
 	}
 
@@ -61,14 +62,13 @@ public class Exemplar { //exemplary
 		return this.emprestimos .isEmpty() 
 				|| 
 				this.emprestimos.stream().allMatch(emprestimo -> emprestimo.foiDevolvido());
-//		return false;
 	}
 
 	public Emprestimo criaEmprestimo(@NotNull @Valid Usuario usuario, @Positive int tempo) {
-		Assert.state(this.disponivelParaEmprestimo(), "Esta instancia não esta Disponivel para imprestimo");
+		Assert.state(this.disponivelParaEmprestimo(), "Este exemplar não está disponível para empréstimo");
 		Emprestimo emprestimo = new Emprestimo(usuario, this , tempo);
 		boolean add = this.emprestimos.add(emprestimo);
-		Assert.state(add, "A adição do emprestimo falhou para este exemplar. possivel concorrencia de exemplar");
+		Assert.state(add, "A adição do empréstimo falhou para este exemplar. possível concorrência de exemplar");
 		this.versao++;
 		return emprestimo;
 	}

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.portfolio.biblioteca.api.dto.request.EmprestimoRq;
-import br.com.portfolio.biblioteca.api.validator.verificacaoBasicaEmprestimoValidator;
+import br.com.portfolio.biblioteca.api.validator.VerificacaoBasicaEmprestimoValidator;
 import br.com.portfolio.biblioteca.domain.entity.Emprestimo;
 
 @RestController
@@ -25,7 +25,7 @@ public class EmprestimoController {
 	private EntityManager manager;
 	
 	@Autowired
-	private verificacaoBasicaEmprestimoValidator verificacaoBasicaEmprestimoValidator;
+	private VerificacaoBasicaEmprestimoValidator verificacaoBasicaEmprestimoValidator;
 	
 	@InitBinder
 	public void init(WebDataBinder binder) {

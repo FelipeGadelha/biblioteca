@@ -1,6 +1,7 @@
 package br.com.portfolio.biblioteca.api.dto.request;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.validation.constraints.NotNull;
@@ -64,8 +65,9 @@ public class EmprestimoRq implements PedidoEmprestimoComTempo {
 		
 		
 		int limiteMaximoDeTempoDeEmprestimo = 60;
-		int tempoDefinido = tempo == null ? limiteMaximoDeTempoDeEmprestimo : tempo;
-		return livro.criaEmprestimo(usuario, tempoDefinido);
+		int tempoDefinido = Optional.ofNullable(tempo).orElse(limiteMaximoDeTempoDeEmprestimo);
+//		int tempoDefinido = tempo == null ? limiteMaximoDeTempoDeEmprestimo : tempo;
+		return usuario.criaEmprestimo(livro, tempoDefinido);
 		
 	}
 	

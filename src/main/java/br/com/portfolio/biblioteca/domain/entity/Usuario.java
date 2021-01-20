@@ -2,13 +2,16 @@ package br.com.portfolio.biblioteca.domain.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import org.modelmapper.internal.util.Assert;
 
@@ -62,8 +65,30 @@ public class Usuario {
 		int limiteDeEmprestimo = 5;
 		return quantidadeEmprestimoNãoDevolvido < limiteDeEmprestimo;
 	}
-
-
 	
+	public Emprestimo criaEmprestimo(@NotNull @Valid Livro livro, @Positive int tempo) {
+
+		Assert.isTrue(livro.aceitaSerEmprestado(this), 
+				"Você esta tentando gerar um empréstimo de livro que não aceita ser emprestado para o usuário " 
+						+ this.getId());
+		Assert.state(livro.estaDisponivelParaEmprestimo(), "Você não pode criar empréstimo para um livro que não tem exemplar disponível");
+		Assert.isTrue(this.aindaPodeSolicitarEmprestimo(), "O usuário não pode mais solicitar empréstimo");
+		
+		
+		Optional<Exemplar> exemplarSelecionado = livro.buscaExemplarDisponivel(this);
+		
+		Assert.state(exemplarSelecionado.isPresent(),
+				"Nesta altura do código a busca pelo exemplar do livro deveria retornar alguma opção");
+		
+		Exemplar exemplar = exemplarSelecionado.get();
+		
+		Assert.state(exemplar.disponivelParaEmprestimo(), "Não deve tentar criar um emprestimo para um exemplar indisponível");
+		
+		Emprestimo emprestimo = exemplar.criaEmprestimo(this, tempo);
+		
+		emprestimos.add(emprestimo);
+		
+		return emprestimo;
+	}
 
 }
